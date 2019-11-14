@@ -31,22 +31,24 @@ int main(int argc, char** argv) {
 
 TEST_SUITE("Phase 1: Constructors") {
 
-    TEST_CASE("Default Constructor") {
-        const Set empty{};
+	TEST_CASE("Default Constructor") {
+		const Set empty{};
 
-        SUBCASE("Test whether empty set") {
-            CHECK(empty.empty());
-        }
+		SUBCASE("Test whether empty set") {
+			CHECK(empty.empty());
+		}
 
-        SUBCASE("Check set members") {
-            CHECK_FALSE(empty.member(0));
-        }
-    }
+		SUBCASE("Check set members") {
+			CHECK_FALSE(empty.member(0));
+		}
+	}
+}
 
     TEST_CASE("Single Element Constructor") {
         const Set s1{999};
 
         SUBCASE("Check set cardinality") {
+			
             CHECK(s1.cardinality() == 1);
         }
 
@@ -113,7 +115,7 @@ TEST_SUITE("Phase 1: Constructors") {
             CHECK(os.str() == std::string("{ 4 9 11 }"));
         }
     }
-}
+
 
 /************************************************
  * TEST PHASE 2: assignment                     *

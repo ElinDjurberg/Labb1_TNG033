@@ -5,6 +5,7 @@
 
 class Set {
 public:
+
     // Default constructor
     Set();
 
@@ -20,6 +21,7 @@ public:
 
     // assignment operator
     Set& operator=(Set b);
+
 
     // destructor
     ~Set();
