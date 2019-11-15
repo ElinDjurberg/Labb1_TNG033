@@ -12,10 +12,10 @@ void Set::insert(Node* p, int value) const {
 
 	else {
 
-	newNode->next = p->next;
-	p->next = newNode;
+		newNode->next = p->next;
+		p->next = newNode;
 	}
-	
+
 }
 
 void Set::remove(Node* p) {
@@ -27,26 +27,28 @@ void Set::remove(Node* p) {
 	//Vad är skillnaden mellan dessa? Hur vet man dummy pekar på pekaren p. Eller om den pekar på samma sak som p, pekar på.
 	//Node* dummy = p;
 
-	Node* dummy = new Node(0, p->next);
+	//Node* dummy = new Node(0, p->next);
+
 	delete p;
-	
-	
+	p = nullptr;
+
+
 
 	/* // 1. Find the node before the node to be removed
-    while ((p1->next != nullptr) && (p1->next->value != n)) {
-        p1 = p1->next;
-    }
+	while ((p1->next != nullptr) && (p1->next->value != n)) {
+		p1 = p1->next;
+	}
 
-    if (p1->next == nullptr)  // n not found in list L
-        return;
+	if (p1->next == nullptr)  // n not found in list L
+		return;
 
-    // 2. Remove
-    Node* p2 = p1->next;  // p2 points to the node to be removed
+	// 2. Remove
+	Node* p2 = p1->next;  // p2 points to the node to be removed
 
-    p1->next = p2->next;
+	p1->next = p2->next;
 
-    // 3. Deallocate the memory of the node pointed by p2
-    delete p2;*/
+	// 3. Deallocate the memory of the node pointed by p2
+	delete p2;*/
 	/*Node* search = head->next;
 
 	while (search != nullptr) {
@@ -59,7 +61,7 @@ void Set::remove(Node* p) {
 
 	return false; //to be deleted*/
 
-	
+
 
 }
 
@@ -73,7 +75,7 @@ Set::Set()
 	//Detta är en nod med en tom efterföljare
 
 	// head = nullptr;
-	
+
 
 }
 
@@ -81,7 +83,7 @@ Set::Set()
 Set::Set(int v) : Set()
 {
 	head->next = new Node(v, nullptr);
-	
+
 	// samma som
 	// Node* dummy = new Node(0, nullptr);
 	// head = dummy;
@@ -89,7 +91,7 @@ Set::Set(int v) : Set()
 
 // Constructor creating a set
 // a non-sorted array of n intgers
-Set::Set(const int a[], int n):Set()
+Set::Set(const int a[], int n) :Set()
 {
 	//Vi måste peka på array för den är constant så vi kan ej ändra den
 	int *newArray = new int[n];
@@ -114,7 +116,7 @@ Set::Set(const int a[], int n):Set()
 
 
 	/*
-	
+
 	// head pekar bara första
 	head = new Node(a[0], nullptr);//ska detta vara en nullptr
 
@@ -165,10 +167,10 @@ Set::Set(const Set& source) : Set()
 	// source är en linked-list, objekt
 	Node* ptr = source.head;
 
-	
+
 	// ptr->next != nullpt
 	// kollar om det finns en ny pekare, finns det, så finns en ny nod
-	
+
 
 	while ((ptr != nullptr) && (ptr->next != nullptr)) {
 
@@ -184,7 +186,7 @@ Set::Set(const Set& source) : Set()
 			head = myNode; // pekar på samma, head ska peka på första
 		}
 		else {
-			
+
 			// ny pekare till första noden, knuffar bak de andra noderna/pekarna
 			myNode->next = head;
 
@@ -200,7 +202,7 @@ Set::Set(const Set& source) : Set()
 	temp = temp->next; // pekar på första riktiga noden
 	Node* tail = head; // denna ska följa med längs hela R, head till R
 
-	while ( temp != nullptr) {
+	while (temp != nullptr) {
 
 		Node* newNode = new Node(temp->value, nullptr);
 		tail->next = newNode; // knyter ihop R
@@ -221,8 +223,8 @@ Set::~Set()
 
 	Node* current = head;
 	// är redan inne i set, så vi når head
-	
-	
+
+
 	//delete head;
 	while (current != nullptr) {
 
@@ -230,7 +232,7 @@ Set::~Set()
 		//finns dummy next så hoppa fram ett steg tills man kommit till slutet. 
 
 		Node* soon = current->next;
-		
+
 		// delete *current; // för att ta bort noden?
 		// sådan man måste deleta själv är sådant man gjort New på, t.ex noder
 
@@ -317,12 +319,13 @@ bool Set::member(int x) const
 		search = search->next;
 	}
 
-		return false; //to be deleted
+	return false; //to be deleted
 }
 
 // Assignment operator
 Set& Set::operator=(Set s)
 {
+	//hur funkar denna?
 
 	Set copy(s);
 	//byter huvuden?
@@ -331,7 +334,7 @@ Set& Set::operator=(Set s)
 	std::swap(head, copy.head);
 
 	// vi är inne i set och får in en annan set också
-	
+
 	// R head och S head
 	//head = s.head;
 
@@ -381,6 +384,9 @@ Set& Set::operator=(Set s)
 bool Set::operator<=(const Set& b) const
 {
 	// Add code
+
+
+
 	return false;  // to be deleted
 }
 
@@ -407,29 +413,158 @@ bool Set::operator<(const Set& b) const
 Set Set::operator+(const Set& b) const
 {
 	// Add code
-	// implement before HA session week 45
+	//Set copy(s);
+	//std::swap(head, copy.head);
+	Set newSet = Set();//Dummy node till vår nya sätt
 
-	return *this;  // to be deleted
+	Node* dummyB = b.head->next;
+	Node* dummyR = head->next;	//Når vi setet vi är i sett R//Ja vi når R
+	//vi skriver head next för att inte räkna med vår dummynode!
+
+	Node* dummyNew = newSet.head;//???? ska vi ha kvar den eller byta till dummy new direkt?
+
+
+	//Node* headNew =   //vad ska dessa vara??
+	//Node* dummyB = new Node(0, nullptr);
+
+
+	while ((dummyB != nullptr) && (dummyR != nullptr)) {
+
+		if (dummyB->value < dummyR->value) {
+			//skapa en ny lista
+			dummyNew->next = new Node(dummyB->value, nullptr);
+			//de* List = new Node()
+
+			dummyB = dummyB->next;
+			dummyNew = dummyNew->next;
+		}
+
+		else if (dummyR->value < dummyB->value) {
+			//lägga till på lista
+			dummyNew->next = new Node(dummyR->value, nullptr);
+			dummyR = dummyR->next;
+			dummyNew = dummyNew->next;
+		}
+
+		else {
+			//om de är samma 
+			//lägg till i list
+			dummyNew->next = new Node(dummyR->value, nullptr);
+			dummyR = dummyR->next;
+			dummyB = dummyB->next;
+			dummyNew = dummyNew->next;
+		}
+
+
+	}
+
+	//Lägg till i listorna
+	while (dummyB != nullptr) {
+		//Lägg till i listan
+		dummyNew->next = new Node(dummyB->value, nullptr);
+		dummyB = dummyB->next;
+		dummyNew = dummyNew->next;
+
+	}
+
+	while (dummyR != nullptr) {
+		//Lägg till i listan
+		dummyNew->next = new Node(dummyR->value, nullptr);
+		dummyR = dummyR->next;
+		dummyNew = dummyNew->next;
+
+	}
+
+	return newSet;  // to be deleted
 }
 
 // Set intersection
 Set Set::operator*(const Set& b) const
 {
 	// Add code
-	return *this;  // to be deleted
+
+
+	Set newSet = Set();//Dummy node till vår nya sätt
+
+	Node* dummyB = b.head->next;
+	Node* dummyR = head->next;	//Når vi setet vi är i sett R//Ja vi når R
+	//vi skriver head next för att inte räkna med vår dummynode!
+
+	Node* dummyNew = newSet.head;//???? ska vi ha kvar den eller byta till dummy new direkt?
+
+
+	//Node* headNew =   //vad ska dessa vara??
+	//Node* dummyB = new Node(0, nullptr);
+
+	while (dummyB != nullptr) {
+
+		while (dummyR != nullptr) {
+
+			if (dummyB->value == dummyR->value) {
+				//skapa en ny lista
+				dummyNew->next = new Node(dummyB->value, nullptr);
+				//de* List = new Node()
+
+				dummyNew = dummyNew->next;
+			}
+
+			dummyR = dummyR->next;
+
+		}
+
+		dummyB = dummyB->next;
+	}
+
+	return newSet;  // to be deleted
 }
 
 // Set difference
 Set Set::operator-(const Set& b) const
 {
-	// Add code
-	return *this;  // to be deleted
+	Set newSet = Set();
+
+	Node* dummyB = b.head->next;
+	Node* dummyR = head->next;
+	Node* dummyNew = newSet.head;
+
+	while (dummyR != nullptr) {
+		
+		int counter = 0;
+
+		while (dummyB != nullptr) {
+
+			if (dummyR->value == dummyB->value) {
+				
+				counter++;
+			}
+
+			dummyB = dummyB->next;
+	
+		}
+
+		dummyB = b.head->next;//vi måste resetta dummy B till nästa loop
+
+		if(counter == 0){
+			dummyNew->next = new Node(dummyR->value, nullptr);
+			dummyNew = dummyNew->next;
+		}
+
+		dummyR = dummyR->next;
+	}
+
+	return newSet;  // to be deleted
 }
 
 // Set union with set {x}
 Set Set::operator+(int x) const
 {
 	// Add code
+
+
+
+
+
+
 	return *this;  // to be deleted
 }
 

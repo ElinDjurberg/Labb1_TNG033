@@ -216,87 +216,91 @@ TEST_SUITE("Phase 2: Assignment") {
 //     *                 S1+S2                        *
 //     *                 S+int                        *
 //     ************************************************/
-//
-//    TEST_CASE("Union: S + {x}") {
-//        const int list[] = {4, 11, 9};
-//        const int listSize{3};
-//
-//        const Set s1{list, listSize};
-//        const Set s2{999};
-//
-//        const Set s3 = s1 + s2;
-//
-//        SUBCASE("Check set cardinality") {
-//            CHECK(s3.cardinality() == listSize + 1);
-//        }
-//
-//        SUBCASE("Check set members") {
-//            CHECK(s3.member(4));
-//            CHECK(s3.member(11));
-//            CHECK(s3.member(9));
-//            CHECK(s3.member(999));
-//        }
-//
-//        SUBCASE("Check set members sorting") {
-//            std::ostringstream os;
-//            os << s3;
-//
-//            CHECK(os.str() == std::string("{ 4 9 11 999 }"));
-//        }
-//    }
-//
-//    TEST_CASE("Union: S1 + S2") {
-//        const int list1[] = {1, 3, 5};
-//        const int listSize1{3};
-//
-//        const int list2[] = {4, 3, 2, 11, 9};
-//        const int listSize2{5};
-//
-//        const Set s1{list1, listSize1};
-//        const Set s2{list2, listSize2};
-//
-//        const Set s3 = s1 + s2;
-//
-//        SUBCASE("Check set cardinality") {
-//            CHECK(s3.cardinality() == 7);
-//        }
-//
-//        SUBCASE("Check set members") {
-//            CHECK(s3.member(1));
-//            CHECK(s3.member(2));
-//            CHECK(s3.member(3));
-//            CHECK(s3.member(4));
-//            CHECK(s3.member(5));
-//            CHECK(s3.member(9));
-//            CHECK(s3.member(11));
-//        }
-//
-//        SUBCASE("Check set members sorting") {
-//            std::ostringstream os;
-//            os << s3;
-//
-//            CHECK(os.str() == std::string("{ 1 2 3 4 5 9 11 }"));
-//        }
-//    }
-//
-//    TEST_CASE("Union: {} + S") {
-//        const int list1[] = {4, 3, 2, 11, 9};
-//        const int listSize1{5};
-//
-//        const Set s1{list1, listSize1};
-//        const Set s2 = Set{} + s1;
-//
-//        SUBCASE("Check set cardinality") {
-//            CHECK(s2.cardinality() == 5);
-//        }
-//
-//        SUBCASE("Check set members sorting") {
-//            std::ostringstream os;
-//            os << s2;
-//
-//            CHECK(os.str() == std::string("{ 2 3 4 9 11 }"));
-//        }
-//    }
+
+    TEST_CASE("Union: S + {x}") {
+        const int list[] = {4, 11, 9};
+        const int listSize{3};
+
+        const Set s1{list, listSize};
+        const Set s2{999};
+
+        const Set s3 = s1 + s2;
+
+        SUBCASE("Check set cardinality") {
+            CHECK(s3.cardinality() == listSize + 1);
+        }
+
+        SUBCASE("Check set members") {
+            CHECK(s3.member(4));
+            CHECK(s3.member(11));
+            CHECK(s3.member(9));
+            CHECK(s3.member(999));
+        }
+
+        SUBCASE("Check set members sorting") {
+            std::ostringstream os;
+            os << s3;
+
+            CHECK(os.str() == std::string("{ 4 9 11 999 }"));
+        }
+    }
+
+TEST_CASE("Union: S1 + S2") {
+	const int list1[] = { 1, 3, 5 };
+	const int listSize1{ 3 };
+
+	const int list2[] = { 4, 3, 2, 11, 9 };
+	const int listSize2{ 5 };
+
+	const Set s1{ list1, listSize1 };
+	const Set s2{ list2, listSize2 };
+
+	const Set s3 = s1 + s2;
+
+	SUBCASE("Check set cardinality") {
+		CHECK(s3.cardinality() == 7);
+	}
+
+	SUBCASE("Check set members") {
+		CHECK(s3.member(1));
+		CHECK(s3.member(2));
+		CHECK(s3.member(3));
+		CHECK(s3.member(4));
+		CHECK(s3.member(5));
+		CHECK(s3.member(9));
+		CHECK(s3.member(11));
+	}
+
+
+
+
+
+        SUBCASE("Check set members sorting") {
+            std::ostringstream os;
+            os << s3;
+
+            CHECK(os.str() == std::string("{ 1 2 3 4 5 9 11 }"));
+        }
+    }
+
+    TEST_CASE("Union: {} + S") {
+        const int list1[] = {4, 3, 2, 11, 9};
+        const int listSize1{5};
+
+        const Set s1{list1, listSize1};
+        const Set s2 = Set{} + s1;
+
+        SUBCASE("Check set cardinality") {
+            CHECK(s2.cardinality() == 5);
+        }
+
+        SUBCASE("Check set members sorting") {
+            std::ostringstream os;
+            os << s2;
+
+            CHECK(os.str() == std::string("{ 2 3 4 9 11 }"));
+        }
+    }
 //
 //    TEST_CASE("Union: S + int") {
 //        const int list[] = {4, 11, 9};
@@ -347,143 +351,146 @@ TEST_SUITE("Phase 2: Assignment") {
 //     *                 S1*S2                        *
 //     *                 S*int                        *
 //     ************************************************/
-//
-//    TEST_CASE("Intersection: S1 * S2") {
-//        const int list[] = {4, 11, 9};
-//        const int listSize{3};
-//
-//        const Set s1{list, listSize};
-//
-//        SUBCASE("Emtpy intersection") {
-//            const Set s2{999};
-//            const Set s3{s1 * s2};
-//
-//            SUBCASE("Check set cardinality") {
-//                CHECK(s3.cardinality() == 0);
-//            }
-//        }
-//
-//        SUBCASE("Intersection: S * {}") {
-//            const Set empty{};
-//            const Set s3 = s1 * empty;
-//
-//            SUBCASE("Check set cardinality") {
-//                CHECK(s3.cardinality() == 0);
-//            }
-//        }
-//
-//        SUBCASE("Partial intersection") {
-//            const int list2[] = {5, 4, 11, 2};
-//            const Set s2{list2, 4};
-//            const Set s3{s1 * s2};
-//
-//            SUBCASE("Check s cardinality") {
-//                CHECK(s3.cardinality() == 2);
-//            }
-//
-//            SUBCASE("Check set members") {
-//                CHECK(s3.member(4));
-//                CHECK(s3.member(11));
-//            }
-//
-//            SUBCASE("Check set members sorting") {
-//                std::ostringstream os;
-//                os << s3;
-//
-//                CHECK(os.str() == std::string("{ 4 11 }"));
-//            }
-//        }
-//
-//        SUBCASE("Intersection of two sets with same elements") {
-//            const Set s2{s1};
-//            const Set s3{s1 * s2};
-//
-//            SUBCASE("Check set cardinality") {
-//                CHECK(s3.cardinality() == listSize);
-//            }
-//
-//            SUBCASE("Check set members") {
-//                CHECK(s3.member(4));
-//                CHECK(s3.member(11));
-//                CHECK(s3.member(9));
-//            }
-//
-//            SUBCASE("Check set members sorting") {
-//                std::ostringstream os;
-//                os << s3;
-//
-//                CHECK(os.str() == std::string("{ 4 9 11 }"));
-//            }
-//        }
-//    }
+
+TEST_CASE("Intersection: S1 * S2") {
+	const int list[] = { 4, 11, 9 };
+	const int listSize{ 3 };
+
+	const Set s1{ list, listSize };
+
+	SUBCASE("Emtpy intersection") {
+		const Set s2{ 999 };
+		const Set s3{ s1 * s2 };
+
+		SUBCASE("Check set cardinality") {
+			CHECK(s3.cardinality() == 0);
+		}
+	}
+
+	SUBCASE("Intersection: S * {}") {
+		const Set empty{};
+		const Set s3 = s1 * empty;
+
+		SUBCASE("Check set cardinality") {
+			CHECK(s3.cardinality() == 0);
+		}
+	}
+
+
+	//Är detta något vi gjort ELIN, FEI??
+
+        SUBCASE("Partial intersection") {
+            const int list2[] = {5, 4, 11, 2};
+            const Set s2{list2, 4};
+            const Set s3{s1 * s2};
+
+            SUBCASE("Check s cardinality") {
+                CHECK(s3.cardinality() == 2);
+            }
+
+            SUBCASE("Check set members") {
+                CHECK(s3.member(4));
+                CHECK(s3.member(11));
+            }
+
+            SUBCASE("Check set members sorting") {
+                std::ostringstream os;
+                os << s3;
+
+                CHECK(os.str() == std::string("{ 4 11 }"));
+            }
+        }
+
+        SUBCASE("Intersection of two sets with same elements") {
+            const Set s2{s1};
+            const Set s3{s1 * s2};
+
+            SUBCASE("Check set cardinality") {
+                CHECK(s3.cardinality() == listSize);
+            }
+
+            SUBCASE("Check set members") {
+                CHECK(s3.member(4));
+                CHECK(s3.member(11));
+                CHECK(s3.member(9));
+            }
+
+            SUBCASE("Check set members sorting") {
+                std::ostringstream os;
+                os << s3;
+
+                CHECK(os.str() == std::string("{ 4 9 11 }"));
+            }
+        }
+    }
 //
 //    /************************************************
 //     * TEST PHASE 3.c: operator-                    *
 //     *                 S1-S2                        *
 //     *                 S-int                        *
 //     ************************************************/
-//
-//    TEST_CASE("Difference: S1 - S2") {
-//        const int list[] = {4, 11, 6, 9};
-//        const int listSize{3};
-//
-//        const int list2[] = {1, 7, 11, 5, 9};
-//        const int listSize2{5};
-//
-//        const Set s1{list, listSize};
-//        const Set s2{list2, listSize2};
-//
-//        const Set s3{s1 - s2};
-//
-//        SUBCASE("Check set cardinality") {
-//            CHECK(s3.cardinality() == 2);
-//        }
-//
-//        SUBCASE("Check set members") {
-//            CHECK(s3.member(4));
-//            CHECK(s3.member(6));
-//        }
-//
-//        SUBCASE("Check all set members") {
-//            std::ostringstream os;
-//            os << s3;
-//
-//            CHECK(os.str() == std::string("{ 4 6 }"));
-//        }
-//    }
-//
-//    TEST_CASE("Difference: S1 - S1") {
-//        const int list[] = {4, 11, 6, 9};
-//        const int listSize{4};
-//
-//        const Set s1{list, listSize};
-//
-//        const Set s2{s1 - s1};
-//
-//        SUBCASE("Check whether set is empty") {
-//            CHECK(s2.empty());
-//        }
-//    }
-//
-//    TEST_CASE("Difference: S1 - {}") {
-//        const int list[] = {4, 11, 6, 9};
-//        const int listSize{4};
-//
-//        const Set s1{list, listSize};
-//        const Set s2{s1 - Set{}};
-//
-//        SUBCASE("Check set cardinality") {
-//            CHECK(s2.cardinality() == 4);
-//        }
-//
-//        SUBCASE("Check set members sorting") {
-//            std::ostringstream os;
-//            os << s2;
-//
-//            CHECK(os.str() == std::string("{ 4 6 9 11 }"));
-//        }
-//    }
-//
+
+    TEST_CASE("Difference: S1 - S2") {
+        const int list[] = {4, 11, 6, 9};
+        const int listSize{3};
+
+        const int list2[] = {1, 7, 11, 5, 9};
+        const int listSize2{5};
+
+        const Set s1{list, listSize};
+        const Set s2{list2, listSize2};
+
+        const Set s3{s1 - s2};
+
+        SUBCASE("Check set cardinality") {
+            CHECK(s3.cardinality() == 2);
+        }
+
+        SUBCASE("Check set members") {
+            CHECK(s3.member(4));
+            CHECK(s3.member(6));
+        }
+
+        SUBCASE("Check all set members") {
+            std::ostringstream os;
+            os << s3;
+
+            CHECK(os.str() == std::string("{ 4 6 }"));
+        }
+    }
+
+    TEST_CASE("Difference: S1 - S1") {
+        const int list[] = {4, 11, 6, 9};
+        const int listSize{4};
+
+        const Set s1{list, listSize};
+
+        const Set s2{s1 - s1};
+
+        SUBCASE("Check whether set is empty") {
+            CHECK(s2.empty());
+        }
+    }
+
+    TEST_CASE("Difference: S1 - {}") {
+        const int list[] = {4, 11, 6, 9};
+        const int listSize{4};
+
+        const Set s1{list, listSize};
+        const Set s2{s1 - Set{}};
+
+        SUBCASE("Check set cardinality") {
+            CHECK(s2.cardinality() == 4);
+        }
+
+        SUBCASE("Check set members sorting") {
+            std::ostringstream os;
+            os << s2;
+
+            CHECK(os.str() == std::string("{ 4 6 9 11 }"));
+        }
+    }
+	
 //    TEST_CASE("Difference: S - int") {
 //        const int list[] = {4, 11, 9};
 //        const int listSize{3};
