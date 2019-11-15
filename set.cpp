@@ -1,247 +1,292 @@
 #include "set.hpp"
-/*
+
+
+
 void Set::insert(Node* p, int value) const {
 	//Kolla alla fallen, sist, mellan efter, dummynode före
 	auto newNode = new Node(value, nullptr);
+	if (p->next == nullptr) {
+		p->next = newNode;
+		//newNode = nullptr;
+	}
 
-	newNode->value = value;
+	else {
+
 	newNode->next = p->next;
-
 	p->next = newNode;
+	}
+	
 }
 
 void Set::remove(Node* p) {
-	//stämmer detta?? Funkar detta
+	/*//stämmer detta?? Funkar detta? Vad händer om det är en tom list?
 	if (empty()) {
 		return;
 	}
-	Node* remove = p.head;
+	*/
+	//Vad är skillnaden mellan dessa? Hur vet man dummy pekar på pekaren p. Eller om den pekar på samma sak som p, pekar på.
+	//Node* dummy = p;
+
+	Node* dummy = new Node(0, p->next);
+	delete p;
+	
+	
+
+	/* // 1. Find the node before the node to be removed
+    while ((p1->next != nullptr) && (p1->next->value != n)) {
+        p1 = p1->next;
+    }
+
+    if (p1->next == nullptr)  // n not found in list L
+        return;
+
+    // 2. Remove
+    Node* p2 = p1->next;  // p2 points to the node to be removed
+
+    p1->next = p2->next;
+
+    // 3. Deallocate the memory of the node pointed by p2
+    delete p2;*/
+	/*Node* search = head->next;
+
+	while (search != nullptr) {
+
+		if (search->value == x) {
+			return true;
+		}
+		search = search->next;
+	}
+
+	return false; //to be deleted*/
+
+	
+
 }
-*/
+
 
 // Default constructor
 Set::Set()
-//: head(new Node(0, nullptr))
 {
-	// Add code
-	// implement before HA session week 46
-
-	//Hur vet man hur man ska göra? Det är väll dålig program practise att göra en egen default.
-	//Men vi behöver en default nu för vi har flera constructorer med samma namn.
-
-	//Node* ptr = new Node(0, nullptr);
-	head = new Node(0, nullptr);
-
-
-	//head = new Node(0, nullptr);  //Denna
-
-
-	//head = nullptr;
-	// vi har en pointer som pekar på en node som innehåller värdet 0 och har en nullpointer som pekar på ingenting
 	//I set.hpp class Node finns en constructor som behöver en int samt en pointer för initalizering
 
+	head = new Node(0, nullptr); // Fö 7, aida skrev det ska vara såhär!!
+	//Detta är en nod med en tom efterföljare
+
+	// head = nullptr;
+	
 
 }
 
 // Constructor for creating a set from an int
-Set::Set(int v): Set()
+Set::Set(int v) : Set()
 {
-
-	//Node* NewNode = new Node(v, nullptr);
-	//head = NewNode;
-
 	head->next = new Node(v, nullptr);
-
-
-	//Känns som detta är fel? Memoary leak? Använder vi set() någongång?
-	//Node* newNode = new Node(v, nullptr);
-
-	//Node* dummy = new Node(0, nullptr);
-
-	//head = newNode(0, nullptr);
-	//head = new Node(v, nullptr);
-
-	// Add code
-	// implement before HA session week 46
-	//Set(&v->value);
-	//&Set();
-	//ptr = ptr2;
-	//Node* ptr2{ Set (ptr) };
-
-	//Node* ptr2->value = v;
-	//ptr->value = v;
-	//Node this.ptr->value = v;
-	//ptr->next;
-
+	
+	// samma som
+	// Node* dummy = new Node(0, nullptr);
+	// head = dummy;
 }
 
 // Constructor creating a set
 // a non-sorted array of n intgers
-Set::Set(const int a[], int n)
+Set::Set(const int a[], int n):Set()
 {
-	/* // Add code
-	 // implement before HA session week 46
-	 head = new Node(a[0], nullptr);//ska detta vara en nullptr
-	 Node* dummy = head;//pekar där head pekar på
-	 for (int i = 1; i < n ; i++) {
-		 int value = a[i];
+	//Vi måste peka på array för den är constant så vi kan ej ändra den
+	int *newArray = new int[n];
 
-		 Node* newNode = new Node(value, head->next);//vad är head next? Var pekar den?
+	for (int i = 0; i < n; i++) {
+		newArray[i] = a[i];
+	}
 
-		 head->next = newNode;
-		 dummy = head->next;
+	int temp = 0;
+	for (int i = 0; i < n - 1; i++) {
+		for (int j = i + 1; j < n; j++) {
+			if (newArray[i] > newArray[j]) {
 
-		 //if (i == n) {
-			 //Nu kommer den ha samma namn??
-			 //Den sista ska fortfarande ha nullpointer!
-			 //Node* newNode1 = new Node(value, nullptr);
+				temp = newArray[j];
+				newArray[j] = newArray[i];
+				newArray[i] = temp;
 
-		 //}
+			}
+		}
+	}
 
-		 }*/
-	head = new Node(a[0], nullptr);
-	Node* dummy = head;
+
+
+	/*
+	
+	// head pekar bara första
+	head = new Node(a[0], nullptr);//ska detta vara en nullptr
+
+	// dummy ska alltid peka på den sista i linked_list
+	// om man har tre nodes, head pekar på första och dummy på tredje
+	Node* dummy = head; // START: pekar där head pekar på
 
 	for (int i = 1; i < n; i++) {
 		int value = a[i];
 
+		dummy->next = new Node(value, nullptr);
+		// dummy->next är nya pointern till sista noden (som också är ny)
+		// nya noden ska inte peka på något
+
+		dummy = dummy->next; // ny dummy som pekar på sista noden
+
+		// måste deleta nånstans vart?
+
+	}*/
+
+	// head = new Node(a[0], nullptr);
+	//detta ska bort etfersom jag skrev Set() i början av funktoinen
+
+	Node* dummy = head;
+
+	for (int i = 0; i < n; i++) {
+		int value = newArray[i];
+
 		Node* newNode = new Node(value, nullptr);//Repetera ej den koden
-		dummy->next = newNode;
+		dummy->next = newNode; //sätter ihop noderna
 		dummy = dummy->next;
 	}
+	//Glöm inte att vi måste deleta på fler ställen!!
+	delete[] newArray;
+	newArray = nullptr;
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//Deep copy för vi vill ha en ny array med samma data men i olika minnen
-//Om vi använder new så glöm ej att radera
-//Hon har kopierat hela Copy by value
-//S.21 föreläsning 5 
-//vad gör vi för fel?
-//Dynamic array
-//const int SIZE = n;
-//int b[SIZE] = {0};
-//for (int i = 0; i < n; i++) {
-	//b[i] = a[i];
-
-	/*
-	std::vector<int> list(3);
-	int howMany = n;
-
-	for(int i = 0; i < howMany; i++){
-		//int value;
-		for (int i = 0; i < n; i++) {
-			b[i] = a[i];
-		b[i] = a[i];
-		list.push_back(value);
-	}
-}*/
 
 
 
 // copy constructor
-Set::Set(const Set& source) {
-	// Add code
-	// implement before HA session week 46
+Set::Set(const Set& source) : Set()
+{
+	/*
+	// referens
 
-	//måste man göra något om det är en tom lista?
+	// är i klassen set, kommer åt privata saker
+	// source är en linked-list, objekt
+	Node* ptr = source.head;
 
-	//Pekar head aotomatiskt på den första eller måste man skriva den
-	Node* temp = source.head;//skriv inte Node* temp = new Node(0, nullptr);   temp = head.source; då får vi en memory leak
-	Node* head2 = new Node(temp->value, nullptr);
-	temp = temp->next;
-	Node* dummy = head2;
+	
+	// ptr->next != nullpt
+	// kollar om det finns en ny pekare, finns det, så finns en ny nod
+	
 
-	//Behövs kolla temp next !=  nullptr?
+	while ((ptr != nullptr) && (ptr->next != nullptr)) {
 
-	while (temp != nullptr) {
+		// kopior som ska in i egen lista
+		// sparar pekare med nodfakta från pekare ptr som pekar på en specifik nod
+		Node* myNode = new Node( ptr->value, nullptr);
 
-		Node* newNode = new Node(temp->value, nullptr);
-		dummy->next = newNode;//Kopplar vi ihop dem här?
-		temp = temp->next;
-		dummy = dummy->next;
+		ptr = ptr->next;
+		// typ j++ i for loop
+
+		// bara om head är nullptr, för då finns bara en nod
+		if (head == nullptr){
+			head = myNode; // pekar på samma, head ska peka på första
+		}
+		else {
+			
+			// ny pekare till första noden, knuffar bak de andra noderna/pekarna
+			myNode->next = head;
+
+			head = myNode; // head pekar på nyaste noden som skapats
+		}
 
 	}
+	*/
+
+	// skriv inte Node* temp = new node(0, nullptr); // i början för det blir memory leak, Aida
+
+	Node* temp = source.head; // head till S
+	temp = temp->next; // pekar på första riktiga noden
+	Node* tail = head; // denna ska följa med längs hela R, head till R
+
+	while ( temp != nullptr) {
+
+		Node* newNode = new Node(temp->value, nullptr);
+		tail->next = newNode; // knyter ihop R
+		tail = tail->next; // samma som // tail=newNode;
+		temp = temp->next; // pekarp å nästa nod i S, som ska kopieras
+	}
 }
+
+
+
 
 // Destructor: deallocate all nodes
 Set::~Set()
 {
-	// Add code
-	// implement before HA session week 46
 	//gå node för node och delete p;
 	// måste man göra något om det är en tom lista??
 	//Obs glöm ej radera dummy nodes också?
 
-	Node* current = head;//Når jag headen från listan jag får in? Kommer jag åt headen?//current pekar där head pekar?
-	//behöver jag kolla båda?
+	Node* current = head;
+	// är redan inne i set, så vi når head
+	
+	
 	//delete head;
 	while (current != nullptr) {
 
 		//går längst bak i listan
-		//Vad betyder ; i detta fall?
 		//finns dummy next så hoppa fram ett steg tills man kommit till slutet. 
-		//Kan denna råka peka på en nullpointer?
-		/*
-		for (; dummy->next; dummy = dummy->next) {
-			delete dummy;
-		}
-		*/
-		Node* soon = current->next;//Kan jag skapa en ny här varje gång?
-		delete current;//tar vi bort objectet eller pekarn?
 
+		Node* soon = current->next;
+		
+		// delete *current; // för att ta bort noden?
+		// sådan man måste deleta själv är sådant man gjort New på, t.ex noder
+
+		delete current;//tar vi bort objectet
 		current = soon;
 
 	}
-	//Måste radera något här men vad
-	//Kan vi sätta head till nullptr;
-	//delete head;//Raderar jag nu dummynoden jag skapade för det vill jag?
-	//måste deleta den sista noden på något sätt har jag gjort det?
 }
+
+
+/*
+Sätter man const efter en funktion skaobjektet INTE ändras
+In: A
+Ut: A
+
+dvs INGA borttagna/tillagda noder, ändrande av pointer eller value i noderna
+
+t.ex en person in (namn, ålder)
+kontrollera nmanet och ålder, INTE ändra något, endast kontrollera
+*/
+
 
 // Test if set is empty
 bool Set::empty() const
 {
-	// Add code
-	// implement before HA session week 46
-	//vat den var head är?
-	//if (head == nullptr) {
-	//return true;  // to be deleted
-	//}
+	// head kan aldrig vara den vi testar, är en dummynode
+	// vi är redan inne i set
+
+	/*
 	bool isEmpty = false;
 
 	if (head->next == nullptr) {
-		isEmpty = true;
-
+		isEmpty = true; // den är tom, inga noder finns
 	}
+	return isEmpty; // to be deleted
+	*/
 
-	//return (head->next == nullptr);//Har vi implementerat dummynode först?
-	return isEmpty;
-
+	return head->next == nullptr;
+	// returnerar true eller falsetrue om
+	// true om head -> next==nullptr;
+	//false om head -> next!=nullptr;
 }
 
 // Return number of elements in the set
+// number of nodes in the set
 int Set::cardinality() const
 {
-	// Add code
-	// implement before HA session week 46
 	//whileloop och räkna antal
 	int counter = 0;
-	Node* dummy = head;
+	Node* dummy = head->next;
+
+	/* man kan även räkna hela skiten inklusive head, sedan ta counter-1 innan return */
+
 	//Dummy->next är också fel
-	while (dummy->next != nullptr) {
+
+	while (dummy != nullptr) {
 		counter++;
 		dummy = dummy->next;
 	}
@@ -252,61 +297,59 @@ int Set::cardinality() const
 // Test if x is an element of the set
 bool Set::member(int x) const
 {
-	// Add code
-	// implement before HA session week 46
 	//search
-/*
+	/*
 	bool search(List L, int n) {
 		Node* p = L.head->next;  // skip the dummy node. Har vi en dummy node före alla i detta fall?
-
 		while ((p != nullptr) && (p->value != n)) {
 			p = p->next;
 		}
-
 		return (p != nullptr);
 	}*/
 
 	Node* search = head->next;
-	bool exist = false;
 
 	while (search != nullptr) {
 
-		if (search->value != x) {
-			search = search->next;
+		if (search->value == x) {
+			return true;
 		}
-
-		else {
-			exist = true;
-			break;
-			
-		}
+		search = search->next;
 	}
 
-
-
-	return exist;
-	//return false; //to be deleted
-
-
+		return false; //to be deleted
 }
 
 // Assignment operator
 Set& Set::operator=(Set s)
 {
-	// Add code
-	//copy and swap, radera den du gör innan
+
+	Set copy(s);
+	//byter huvuden?
+	//när använda punkt och när använda pil?
+	//fråga gör bara head? varför ej s.head?
+	std::swap(head, copy.head);
+
+	// vi är inne i set och får in en annan set också
 	
-	Node* ptrS = s.head;
-	Node* temp = ptrS;
+	// R head och S head
+	//head = s.head;
+
+	// kopia på s, alltå en ny linked list
+	// sedan snor den till vår head i (this)
+
+	//head = (new Set(s))->head;
+
+	//return *this;
+
+	/*
+	Node* temp = head;
 	Node* R = new Node(0, nullptr);
 
-	ptrS = R;
+	head = R;
 	R = temp;
 
-
-
-
-
+	*/
 
 	/*
 		// två olika linked-list, två olika head
@@ -319,29 +362,20 @@ Set& Set::operator=(Set s)
 			std::swap(ptrThis->value, ptrS->value);
 			ptrThis = ptrThis->next;
 			ptrS = ptrS->next;
-
 			if (ptrThis == nullptr) {
 				//insert
 				auto newNode = new Node(ptrS->value, nullptr);
 				newNode = ptrThis->next;
-
 				//newNode->value = value;
 				newNode->next = p->next;
-
 				p->next = newNode;
-				
 			}
 		}
 
-		
 		*/
 
-		//vad händer om den ena är längre än den andra eller kortare?
-		//Vad ska returneras
-		//radera den vi har?
-	
-	return *this;
-	//return *this;  // to be deleted raderas vår automatisk? Kallar den på delocate automatiskt?. Står ju att vi ska radera
+	return *this; // hela objektet returneras
+	// to be deleted raderas vår automatisk? Kallar den på delocate automatiskt?. Står ju att vi ska radera
 }
 
 bool Set::operator<=(const Set& b) const
