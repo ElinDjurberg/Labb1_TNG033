@@ -325,7 +325,7 @@ bool Set::member(int x) const
 // Assignment operator
 Set& Set::operator=(Set s)
 {
-	//hur funkar denna?
+	//hur funkar denna????
 
 	Set copy(s);
 	//byter huvuden?
@@ -384,28 +384,157 @@ Set& Set::operator=(Set s)
 bool Set::operator<=(const Set& b) const
 {
 	// Add code
+	bool isSubset = false;
+	Node* dummy = head->next;//hoppar över till första tal
+	Node* dummyB = b.head->next;
+	int counter = 0;
+	//bool da = b.empty();//b borde vara tom?//tom är det som skickas in
+	//bool hej =this->empty();
 
+	//Kollar om vi är i en tom för då kommer det alltid vara sant
+	if (this->empty()) {
+		isSubset = true;
+		return isSubset;
+		
+	}
 
+	while (dummy != nullptr) {
 
-	return false;  // to be deleted
+		while (dummyB != nullptr) {
+			if (dummyB->value == dummy->value) {
+				counter++;
+			}
+			dummyB = dummyB->next;
+
+		}
+		//resetta dummy 
+		dummyB = b.head->next;
+		dummy = dummy->next;
+
+	}
+	//int y = b.cardinality();
+	//kan man kalla på cardinality sådär?
+	if (counter == this->cardinality()) {
+		isSubset = true;
+	}
+	
+	return isSubset;  // to be deleted
 }
 
 bool Set::operator==(const Set& b) const
 {
 	// Add code
-	return false;  // to be deleted
+
+	bool isSubset = false;
+	Node* dummy = head->next;//hoppar över till första tal
+	Node* dummyB = b.head->next;
+	int counter = 0;
+	//bool da = b.empty();//b borde vara tom?//tom är det som skickas in
+	//bool hej =this->empty();
+
+	while (dummy != nullptr) {
+
+		while (dummyB != nullptr) {
+			if (dummyB->value == dummy->value) {
+				counter++;
+			}
+			dummyB = dummyB->next;
+
+		}
+		//resetta dummy 
+		dummyB = b.head->next;
+		dummy = dummy->next;
+
+	}
+	//kollar att båda setten innehåller lika mycket samt att allt i enna settet även finns i andra
+	if ((counter == this->cardinality()) && b.cardinality() == this->cardinality()) {
+		isSubset = true;
+	}
+
+	return isSubset;  // to be deleted
+
 }
 
 bool Set::operator!=(const Set& b) const
 {
-	// Add code
-	return false;  // to be deleted
+	//if(this->operator==() != b.operator==())
+
+	bool isSubset = false;
+	bool answer = true;
+	Node* dummy = head->next;//hoppar över till första tal
+	Node* dummyB = b.head->next;
+	int counter = 0;
+	//bool da = b.empty();//b borde vara tom?//tom är det som skickas in
+	//bool hej =this->empty();
+
+	while (dummy != nullptr) {
+
+		while (dummyB != nullptr) {
+			if (dummyB->value == dummy->value) {
+				counter++;
+			}
+			dummyB = dummyB->next;
+
+		}
+		//resetta dummy 
+		dummyB = b.head->next;
+		dummy = dummy->next;
+
+	}
+	//kollar att båda setten innehåller lika mycket samt att allt i enna settet även finns i andra
+	if ((counter == this->cardinality()) && b.cardinality() == this->cardinality()) {
+		isSubset = true;
+	}
+
+	if(isSubset == true){
+		answer = false;
+	}
+	return answer;  // to be deleted
+
 }
 
 bool Set::operator<(const Set& b) const
 {
 	// Add code
-	return false;  // to be deleted
+
+	bool isSubset = false;
+	Node* dummy = head->next;//hoppar över till första tal
+	Node* dummyB = b.head->next;
+	int counter = 0;
+	//bool da = b.empty();//b borde vara tom?//tom är det som skickas in
+	//bool hej =this->empty();
+
+	//Kollar om vi är i en tom för då kommer det alltid vara sant
+	//if (this->empty()) {
+		//isSubset = true;
+		//return isSubset;
+
+	//}
+
+	while (dummy != nullptr) {
+
+		while (dummyB != nullptr) {
+			if (dummyB->value == dummy->value) {
+				counter++;
+			}
+			dummyB = dummyB->next;
+
+		}
+		//resetta dummy 
+		dummyB = b.head->next;
+		dummy = dummy->next;
+
+	}
+	//int y = b.cardinality();
+	//kan man kalla på cardinality sådär?
+	//Vi har ju skrivit om > nu kan jag fortfarande använda den som förut?
+	//den vi skickar in måste vara större
+	if ((counter == this->cardinality()) && b.cardinality() > this->cardinality()) {
+		isSubset = true;
+	}
+
+	return isSubset;  // to be deleted
+	
 }
 
 // Set union
@@ -511,6 +640,8 @@ Set Set::operator*(const Set& b) const
 			dummyR = dummyR->next;
 
 		}
+		//Detta är för att resetta dummyR annars är den längst bort i arrayn! Detta glömde vi
+		dummyR = head->next;
 
 		dummyB = dummyB->next;
 	}
@@ -528,23 +659,23 @@ Set Set::operator-(const Set& b) const
 	Node* dummyNew = newSet.head;
 
 	while (dummyR != nullptr) {
-		
+
 		int counter = 0;
 
 		while (dummyB != nullptr) {
 
 			if (dummyR->value == dummyB->value) {
-				
+
 				counter++;
 			}
 
 			dummyB = dummyB->next;
-	
+
 		}
 
 		dummyB = b.head->next;//vi måste resetta dummy B till nästa loop
 
-		if(counter == 0){
+		if (counter == 0) {
 			dummyNew->next = new Node(dummyR->value, nullptr);
 			dummyNew = dummyNew->next;
 		}
@@ -558,21 +689,69 @@ Set Set::operator-(const Set& b) const
 // Set union with set {x}
 Set Set::operator+(int x) const
 {
-	// Add code
+	//är en konstant så vi kan ej ändra den. Så vi kopierar den. Finns det ett bättre sätt?
+	//Node* dummyR = newSet.head;//hoppar över dummyNoden??Den har ingen dummyNode?
+	//int *newArray = new int[n];
+	//varför funkar detta inte????????????????
+
+	//Set newSet = Set();
+
+	//Node* dummyR = head->next;//i den vi är i
+	//Node* dummyNew = newSet.head;
+	//if (dummyR != nullptr) {
+	//	dummyNew->next = new Node(dummyR->value, nullptr);
+	//	dummyR = dummyR->next;
+	//	dummyNew = dummyNew->next;
+	//}
 
 
+	////dummyNew = newSet.head->next;//hoppa över dummy node. Nollställer
+	//dummyR = head->next;
+	//int counter = 0;
 
+	//while (dummyR != nullptr) {
 
+	//	if (dummyR->value == x) {
 
+	//		counter++;
+	//	}
+	//	dummyR = dummyR->next;
+	//}
 
-	return *this;  // to be deleted
+	//if (counter == 0) {
+	//	dummyNew->next = new Node(x, nullptr);
+	//}
+
+	////dummyNew = dummyNew->next;
+
+	//return newSet;  // to be deleted
+
+	//gör ett nytt sätt med det värdet vi fick in
+	Set *newInt = new Set(x);
+	//använder vår operator+ som vi skapat.
+	const Set combinedSet = *this + *newInt;
+
+	return combinedSet;
+
+	//Set *theOne = new Set(x);
+
+	//const Set s3 = *this + *theOne;
+
+	//// Add code
+	//return s3;  // to be deleted
 }
 
 // Set difference with set {x}
 Set Set::operator-(int x) const
 {
 	// Add code
-	return *this;  // to be deleted
+
+	//gör ett nytt sätt med det värdet vi fick in
+	Set *newInt = new Set(x);
+	//använder vår operator- som vi skapat.
+	const Set combinedSet = *this - *newInt;
+
+	return combinedSet;
 }
 
 
