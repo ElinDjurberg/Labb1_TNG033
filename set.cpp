@@ -7,7 +7,6 @@ void Set::insert(Node* p, int value) const {
 	auto newNode = new Node(value, nullptr);
 	if (p->next == nullptr) {
 		p->next = newNode;
-		//newNode = nullptr;
 	}
 
 	else {
@@ -15,53 +14,13 @@ void Set::insert(Node* p, int value) const {
 		newNode->next = p->next;
 		p->next = newNode;
 	}
-
+	//borde man deleta här??
 }
 
 void Set::remove(Node* p) {
-	/*//stämmer detta?? Funkar detta? Vad händer om det är en tom list?
-	if (empty()) {
-		return;
-	}
-	*/
-	//Vad är skillnaden mellan dessa? Hur vet man dummy pekar på pekaren p. Eller om den pekar på samma sak som p, pekar på.
-	//Node* dummy = p;
-
-	//Node* dummy = new Node(0, p->next);
-
+	
 	delete p;
 	p = nullptr;
-
-
-
-	/* // 1. Find the node before the node to be removed
-	while ((p1->next != nullptr) && (p1->next->value != n)) {
-		p1 = p1->next;
-	}
-
-	if (p1->next == nullptr)  // n not found in list L
-		return;
-
-	// 2. Remove
-	Node* p2 = p1->next;  // p2 points to the node to be removed
-
-	p1->next = p2->next;
-
-	// 3. Deallocate the memory of the node pointed by p2
-	delete p2;*/
-	/*Node* search = head->next;
-
-	while (search != nullptr) {
-
-		if (search->value == x) {
-			return true;
-		}
-		search = search->next;
-	}
-
-	return false; //to be deleted*/
-
-
 
 }
 
@@ -73,20 +32,14 @@ Set::Set()
 
 	head = new Node(0, nullptr); // Fö 7, aida skrev det ska vara såhär!!
 	//Detta är en nod med en tom efterföljare
-
-	// head = nullptr;
-
-
+	// kan inte deleta här för då finns inget att skicka vidare //delete head;
 }
 
 // Constructor for creating a set from an int
 Set::Set(int v) : Set()
 {
 	head->next = new Node(v, nullptr);
-
-	// samma som
-	// Node* dummy = new Node(0, nullptr);
-	// head = dummy;
+	//deleta ej här heller
 }
 
 // Constructor creating a set
@@ -114,32 +67,6 @@ Set::Set(const int a[], int n) :Set()
 	}
 
 
-
-	/*
-
-	// head pekar bara första
-	head = new Node(a[0], nullptr);//ska detta vara en nullptr
-
-	// dummy ska alltid peka på den sista i linked_list
-	// om man har tre nodes, head pekar på första och dummy på tredje
-	Node* dummy = head; // START: pekar där head pekar på
-
-	for (int i = 1; i < n; i++) {
-		int value = a[i];
-
-		dummy->next = new Node(value, nullptr);
-		// dummy->next är nya pointern till sista noden (som också är ny)
-		// nya noden ska inte peka på något
-
-		dummy = dummy->next; // ny dummy som pekar på sista noden
-
-		// måste deleta nånstans vart?
-
-	}*/
-
-	// head = new Node(a[0], nullptr);
-	//detta ska bort etfersom jag skrev Set() i början av funktoinen
-
 	Node* dummy = head;
 
 	for (int i = 0; i < n; i++) {
@@ -160,43 +87,6 @@ Set::Set(const int a[], int n) :Set()
 // copy constructor
 Set::Set(const Set& source) : Set()
 {
-	/*
-	// referens
-
-	// är i klassen set, kommer åt privata saker
-	// source är en linked-list, objekt
-	Node* ptr = source.head;
-
-
-	// ptr->next != nullpt
-	// kollar om det finns en ny pekare, finns det, så finns en ny nod
-
-
-	while ((ptr != nullptr) && (ptr->next != nullptr)) {
-
-		// kopior som ska in i egen lista
-		// sparar pekare med nodfakta från pekare ptr som pekar på en specifik nod
-		Node* myNode = new Node( ptr->value, nullptr);
-
-		ptr = ptr->next;
-		// typ j++ i for loop
-
-		// bara om head är nullptr, för då finns bara en nod
-		if (head == nullptr){
-			head = myNode; // pekar på samma, head ska peka på första
-		}
-		else {
-
-			// ny pekare till första noden, knuffar bak de andra noderna/pekarna
-			myNode->next = head;
-
-			head = myNode; // head pekar på nyaste noden som skapats
-		}
-
-	}
-	*/
-
-	// skriv inte Node* temp = new node(0, nullptr); // i början för det blir memory leak, Aida
 
 	Node* temp = source.head; // head till S
 	temp = temp->next; // pekar på första riktiga noden
@@ -218,12 +108,10 @@ Set::Set(const Set& source) : Set()
 Set::~Set()
 {
 	//gå node för node och delete p;
-	// måste man göra något om det är en tom lista??
 	//Obs glöm ej radera dummy nodes också?
 
 	Node* current = head;
 	// är redan inne i set, så vi når head
-
 
 	//delete head;
 	while (current != nullptr) {
@@ -240,6 +128,8 @@ Set::~Set()
 		current = soon;
 
 	}
+
+
 }
 
 
@@ -258,18 +148,6 @@ kontrollera nmanet och ålder, INTE ändra något, endast kontrollera
 // Test if set is empty
 bool Set::empty() const
 {
-	// head kan aldrig vara den vi testar, är en dummynode
-	// vi är redan inne i set
-
-	/*
-	bool isEmpty = false;
-
-	if (head->next == nullptr) {
-		isEmpty = true; // den är tom, inga noder finns
-	}
-	return isEmpty; // to be deleted
-	*/
-
 	return head->next == nullptr;
 	// returnerar true eller falsetrue om
 	// true om head -> next==nullptr;
@@ -286,8 +164,6 @@ int Set::cardinality() const
 
 	/* man kan även räkna hela skiten inklusive head, sedan ta counter-1 innan return */
 
-	//Dummy->next är också fel
-
 	while (dummy != nullptr) {
 		counter++;
 		dummy = dummy->next;
@@ -299,16 +175,6 @@ int Set::cardinality() const
 // Test if x is an element of the set
 bool Set::member(int x) const
 {
-	//search
-	/*
-	bool search(List L, int n) {
-		Node* p = L.head->next;  // skip the dummy node. Har vi en dummy node före alla i detta fall?
-		while ((p != nullptr) && (p->value != n)) {
-			p = p->next;
-		}
-		return (p != nullptr);
-	}*/
-
 	Node* search = head->next;
 
 	while (search != nullptr) {
@@ -325,57 +191,9 @@ bool Set::member(int x) const
 // Assignment operator
 Set& Set::operator=(Set s)
 {
-	//hur funkar denna????
 
 	Set copy(s);
-	//byter huvuden?
-	//när använda punkt och när använda pil?
-	//fråga gör bara head? varför ej s.head?
 	std::swap(head, copy.head);
-
-	// vi är inne i set och får in en annan set också
-
-	// R head och S head
-	//head = s.head;
-
-	// kopia på s, alltå en ny linked list
-	// sedan snor den till vår head i (this)
-
-	//head = (new Set(s))->head;
-
-	//return *this;
-
-	/*
-	Node* temp = head;
-	Node* R = new Node(0, nullptr);
-
-	head = R;
-	R = temp;
-
-	*/
-
-	/*
-		// två olika linked-list, två olika head
-		// hämtar head från linked-list s
-	//deletas den andra
-		Node* ptrS = s.head;
-		Node* ptrThis = head;
-		//är det next för att den första är en dummy?
-		while (ptrS->next != nullptr) {
-			std::swap(ptrThis->value, ptrS->value);
-			ptrThis = ptrThis->next;
-			ptrS = ptrS->next;
-			if (ptrThis == nullptr) {
-				//insert
-				auto newNode = new Node(ptrS->value, nullptr);
-				newNode = ptrThis->next;
-				//newNode->value = value;
-				newNode->next = p->next;
-				p->next = newNode;
-			}
-		}
-
-		*/
 
 	return *this; // hela objektet returneras
 	// to be deleted raderas vår automatisk? Kallar den på delocate automatiskt?. Står ju att vi ska radera
@@ -383,13 +201,11 @@ Set& Set::operator=(Set s)
 
 bool Set::operator<=(const Set& b) const
 {
-	// Add code
 	bool isSubset = false;
 	Node* dummy = head->next;//hoppar över till första tal
 	Node* dummyB = b.head->next;
 	int counter = 0;
-	//bool da = b.empty();//b borde vara tom?//tom är det som skickas in
-	//bool hej =this->empty();
+	
 
 	//Kollar om vi är i en tom för då kommer det alltid vara sant
 	if (this->empty()) {
@@ -412,25 +228,22 @@ bool Set::operator<=(const Set& b) const
 		dummy = dummy->next;
 
 	}
-	//int y = b.cardinality();
-	//kan man kalla på cardinality sådär?
+	
 	if (counter == this->cardinality()) {
 		isSubset = true;
 	}
 	
-	return isSubset;  // to be deleted
+	return isSubset; 
 }
 
 bool Set::operator==(const Set& b) const
 {
-	// Add code
-
+	
 	bool isSubset = false;
 	Node* dummy = head->next;//hoppar över till första tal
 	Node* dummyB = b.head->next;
 	int counter = 0;
-	//bool da = b.empty();//b borde vara tom?//tom är det som skickas in
-	//bool hej =this->empty();
+
 
 	while (dummy != nullptr) {
 
@@ -446,11 +259,22 @@ bool Set::operator==(const Set& b) const
 		dummy = dummy->next;
 
 	}
+	
+	/*
+	bool isSubset = false;
+
+	if ((b.cardinality() == this->cardinality())&& (this <= &b)) {
+		//This kan kanske inte skickas som det?
+		isSubset = true;
+
+	}
+	*/
+	
 	//kollar att båda setten innehåller lika mycket samt att allt i enna settet även finns i andra
 	if ((counter == this->cardinality()) && b.cardinality() == this->cardinality()) {
 		isSubset = true;
 	}
-
+	
 	return isSubset;  // to be deleted
 
 }
@@ -489,27 +313,19 @@ bool Set::operator!=(const Set& b) const
 	if(isSubset == true){
 		answer = false;
 	}
-	return answer;  // to be deleted
+	//return answer;  // to be deleted
+	return !(isSubset);
 
 }
 
 bool Set::operator<(const Set& b) const
 {
-	// Add code
-
+/*
 	bool isSubset = false;
 	Node* dummy = head->next;//hoppar över till första tal
 	Node* dummyB = b.head->next;
 	int counter = 0;
-	//bool da = b.empty();//b borde vara tom?//tom är det som skickas in
-	//bool hej =this->empty();
 
-	//Kollar om vi är i en tom för då kommer det alltid vara sant
-	//if (this->empty()) {
-		//isSubset = true;
-		//return isSubset;
-
-	//}
 
 	while (dummy != nullptr) {
 
@@ -529,10 +345,21 @@ bool Set::operator<(const Set& b) const
 	//kan man kalla på cardinality sådär?
 	//Vi har ju skrivit om > nu kan jag fortfarande använda den som förut?
 	//den vi skickar in måste vara större
+
+	*/
+	bool isSubset = false;
+
+	if ((this <= &b) && (b.cardinality() > this->cardinality())) {
+		isSubset = true;
+
+	}
+
+
+	/*
 	if ((counter == this->cardinality()) && b.cardinality() > this->cardinality()) {
 		isSubset = true;
 	}
-
+	*/
 	return isSubset;  // to be deleted
 	
 }
@@ -682,7 +509,7 @@ Set Set::operator-(const Set& b) const
 
 		dummyR = dummyR->next;
 	}
-
+	//ska något tas bort här??
 	return newSet;  // to be deleted
 }
 
