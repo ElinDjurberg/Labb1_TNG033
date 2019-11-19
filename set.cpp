@@ -71,7 +71,8 @@ Set::Set(const int a[], int n) :Set()
 
 	for (int i = 0; i < n; i++) {
 		int value = newArray[i];
-
+		//insert(dummy, i);
+		
 		Node* newNode = new Node(value, nullptr);//Repetera ej den koden
 		dummy->next = newNode; //sätter ihop noderna
 		dummy = dummy->next;
@@ -260,15 +261,27 @@ bool Set::operator==(const Set& b) const
 
 	}
 	
+	
 	/*
 	bool isSubset = false;
+	bool hej = false;
+	bool da = false;
 
-	if ((b.cardinality() == this->cardinality())&& (this <= &b)) {
+	if (b.cardinality() == this->cardinality()) {
+		hej = true;//blir sant
+	}
+	if ((this <= &b)) {
+		da = true;//blir falsk
+	}
+	*/
+	/*
+	//(this <= &b)(&b <= this)//får kan väl ej skicka in this som argument
+	if ((b.cardinality() == this->cardinality()) && (this <= &b)) {
 		//This kan kanske inte skickas som det?
 		isSubset = true;
 
-	}
-	*/
+	}*/
+	
 	
 	//kollar att båda setten innehåller lika mycket samt att allt i enna settet även finns i andra
 	if ((counter == this->cardinality()) && b.cardinality() == this->cardinality()) {
@@ -558,6 +571,7 @@ Set Set::operator+(int x) const
 	//använder vår operator+ som vi skapat.
 	const Set combinedSet = *this + *newInt;
 
+	delete newInt;//vi behöver deleta annars memory leaks
 	return combinedSet;
 
 	//Set *theOne = new Set(x);
@@ -577,7 +591,7 @@ Set Set::operator-(int x) const
 	Set *newInt = new Set(x);
 	//använder vår operator- som vi skapat.
 	const Set combinedSet = *this - *newInt;
-
+	delete newInt;
 	return combinedSet;
 }
 
